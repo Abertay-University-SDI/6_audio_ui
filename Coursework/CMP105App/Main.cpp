@@ -7,8 +7,7 @@
 
 #include <iostream>
 #include "Level.h"
-#include "Framework/AudioManager.h"
-#include "Framework/GameState.h"
+#include "Menu.h"
 
 #ifndef SFML_VERSION_MAJOR
 	#error "SFML 3 is required for this framework."
@@ -73,17 +72,21 @@ void windowProcess(sf::RenderWindow& window, Input& in)
 
 int main()
 {
+
 	//Create the window
-	sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "cmp105 framework");
+	sf::RenderWindow window(sf::VideoMode({ 400, 400 }), "cmp105 Lab 6");
 	window.setVerticalSyncEnabled(true);
 
 	// Initialise input and manager objects.
-	AudioManager audioManager;
 	Input input;
 	GameState gameState;
+	AudioManager audio;
+
 
 	// Create level objects that may reference manager objects
-	Level level(window, input, gameState, audioManager);
+	Level level(window, input, gameState, audio);
+	Menu menu(window, input, gameState, audio);
+	gameState.setCurrentState(State::MENU);
 
 	// Initialise objects for delta time
 	sf::Clock clock;
@@ -100,10 +103,26 @@ int main()
 		deltaTime = clock.restart().asSeconds();
 		if (deltaTime > 0.1f) deltaTime = 0.1f; // Clamp delta time to avoid large jumps
 
-		// Call standard game loop functions (input, update and render)
-		level.handleInput(deltaTime);
-		level.update(deltaTime);
-		level.render();
+		if (gameState.getCurrentState() == State::LEVEL)
+		{
+			// NOTE: Transitions handled inside levels 
+			// (hacky solution suitable for a lab, not a project)
+			level.handleInput(deltaTime);
+			// reset if change has been called.
+			if (gameState.getCurrentState() == State::MENU) 
+				menu.reset();
+			else
+			{
+				level.update(deltaTime);
+				level.render();
+			}
+		}
+		else
+		{
+			menu.handleInput(deltaTime);
+			menu.render();
+		}
+
 
 		// Update input class, handle pressed keys
 		// Must be done last.
