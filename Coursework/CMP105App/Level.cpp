@@ -12,6 +12,7 @@ Level::Level(sf::RenderWindow& hwnd, Input& in, GameState& gs, AudioManager& aud
     if (!m_sheepTexture.loadFromFile("gfx/sheep_sheet.png")) std::cerr << "no sheep texture";
 
     // everything else we can chuck into reset()
+    m_playerRabbit = nullptr;    // ensures nothing is deleted inside reset();
     reset();   
 }
 
