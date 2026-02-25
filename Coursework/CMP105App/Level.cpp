@@ -98,13 +98,6 @@ void Level::UpdateCamera()
     m_window.setView(view);
 }
 
-bool Level::CheckWinCondition()
-{
-    // TODO: update with new game logic
-    return false;
-}
-
-
 // handle user input
 void Level::handleInput(float dt)
 {
@@ -168,10 +161,11 @@ void Level::update(float dt)
 
     manageCollisions();
     UpdateCamera();
-    m_isGameOver = CheckWinCondition();
+    m_isGameOver = timeElapsed > 99;    // temporary
 
     if (m_isGameOver)
     {
+        // will happen ONCE in the frame that game over is triggered.
         writeHighScore(timeElapsed);
         displayScoreboard();
     }
@@ -191,7 +185,6 @@ void Level::render()
     m_window.draw(*m_playerRabbit);
     m_window.draw(m_timerText);
 
-    // phase one
     if (m_isGameOver)
     {
         m_window.draw(m_winText);

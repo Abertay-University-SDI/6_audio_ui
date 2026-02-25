@@ -22,13 +22,12 @@ public:
 
 private:
     void UpdateCamera();
-    bool CheckWinCondition();
     void manageCollisions();
 
-    void writeHighScore(float timeTaken);    // phase one
+    void writeHighScore(float timeTaken);  
     void displayScoreboard();
 
-    void loadLevel(std::string fileName, sf::Vector2f worldSize);   // phase 2
+    void loadLevel(std::string fileName, sf::Vector2f worldSize); 
 
     sf::View m_cameraView;
 
@@ -46,12 +45,12 @@ private:
     bool m_isGameOver;
 
     // UI & Timer
-    sf::Clock m_gameTimer;
+    sf::Clock m_gameTimer;      // We will replace this with a float, although clocks are cool.
     sf::Font m_font;
     sf::Text m_timerText;
     sf::Text m_winText;
 	
-    sf::Text m_scoreboardText;      // phase one
+    sf::Text m_scoreboardText;  
     std::string m_levelName;
 
 };
